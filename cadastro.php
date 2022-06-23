@@ -14,11 +14,12 @@ $dados = json_decode($response_json, true);
 
 $query_chamado = "INSERT INTO logincadastro (nome, email, senha) VALUES (:nome, :email, :senha)";
 
-$cad_chamado = $conn->prepare($query_chamado);
+$senha_segura = password_hash($dados['senha'], PASSWORD_DEFAULT);
 
+$cad_chamado = $conn->prepare($query_chamado);
 $cad_chamado->bindParam(':nome', $dados['nome']);
 $cad_chamado->bindParam(':email', $dados['email']);
-$cad_chamado->bindParam(':senha', $dados['senha']);
+$cad_chamado->bindParam(':senha', $senha_segura);
 
 $cad_chamado->execute();
 
